@@ -13,6 +13,7 @@ Aplikasi belajar bahasa Korea untuk Android, terinspirasi alur produk Volingo te
 - **Simulasi TOPIK** — 20 soal, timer 20 menit, skor terbaik tersimpan.
 - **K-Drama Pack** — 18 frasa, roadmap 4 minggu, dan checklist.
 - **Ketik Hangul** — konversi romanisasi Latin ke Hangul secara langsung.
+- **Pembaruan dalam aplikasi** — cek versi saat dibuka, unduh APK berprogres, verifikasi SHA-256, lalu buka installer Android.
 
 ## Build
 
@@ -37,6 +38,23 @@ flutter test
 - `lib/services/` — state/progres (SharedPreferences), SRS, generator soal.
 - `lib/screens/` — dashboard, roadmap, modul, review, dan seluruh layar latihan.
 - `lib/utils/hangul.dart` — konverter romanisasi → Hangul.
+
+## Pembaruan aplikasi
+
+Pembaruan tidak lewat Play Store. App membaca manifest publik, mengunduh APK rilis, memverifikasi checksum, lalu membuka installer Android.
+
+- Manifest: `https://raw.githubusercontent.com/mahfudinkerja/volingo-korean-releases/main/update.json`
+- Kanal rilis: `https://github.com/mahfudinkerja/volingo-korean-releases`
+- Izin Android yang dipakai: `INTERNET`, `REQUEST_INSTALL_PACKAGES`, dan FileProvider untuk membagikan file APK ke installer.
+
+Alur rilis baru:
+
+1. Naikkan `version` dan build number di `pubspec.yaml` (contoh `1.2.0+4`).
+2. Build: `flutter build apk --release`.
+3. Buat GitHub Release di repo rilis dan unggah APK.
+4. Perbarui `update.json` dengan `versionCode`, `versionName`, `apkUrl`, `sizeBytes`, `sha256`, dan catatan rilis.
+
+> **Signing:** APK rilis saat ini memakai debug keystore Flutter (konfigurasi default). Android hanya mau memasang update dengan package dan signing key yang sama. Jangan ganti keystore selama kanal ini dipakai, dan cadangkan `~/.android/debug.keystore`.
 
 ## Batasan
 

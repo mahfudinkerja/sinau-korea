@@ -5,11 +5,13 @@ import '../data/lessons_data.dart';
 import '../services/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import '../widgets/update_banner.dart';
 import 'dialog_screens.dart';
 import 'drama_screen.dart';
 import 'hangul_tool_screen.dart';
 import 'lesson_screen.dart';
 import 'question_bank_screen.dart';
+import 'update_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final AppState state;
@@ -79,6 +81,21 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
+                    IconButton(
+                      tooltip: 'Pembaruan aplikasi',
+                      visualDensity: VisualDensity.compact,
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const UpdateScreen(),
+                        ),
+                      ),
+                      icon: const Icon(
+                        Icons.system_update_alt_rounded,
+                        size: 20,
+                        color: AppColors.muted,
+                      ),
+                    ),
+                    const SizedBox(width: 2),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 11,
@@ -110,6 +127,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                const UpdateBanner(),
                 const SizedBox(height: 22),
                 if (next != null)
                   GestureDetector(
