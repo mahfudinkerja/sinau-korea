@@ -14,6 +14,9 @@ Aplikasi belajar bahasa Korea untuk Android, terinspirasi alur produk Volingo te
 - **K-Drama Pack** — 18 frasa, roadmap 4 minggu, dan checklist.
 - **Ketik Hangul** — konversi romanisasi Latin ke Hangul secara langsung.
 - **Pembaruan dalam aplikasi** — cek versi saat dibuka, unduh APK berprogres, verifikasi SHA-256, lalu buka installer Android.
+- **Light & dark mode** — tema Sistem/Terang/Gelap di halaman Pengaturan, dengan palet warna adaptif.
+- **Haptic feedback** — getaran saat memilih jawaban, rating kartu SRS, membuka modul, dan berpindah tab; bisa dimatikan.
+- **Adaptive app icon** — ikon ㅎ baru untuk legacy, adaptive, dan monochrome icon Android.
 
 ## Build
 
@@ -39,12 +42,25 @@ flutter test
 - `lib/screens/` — dashboard, roadmap, modul, review, dan seluruh layar latihan.
 - `lib/utils/hangul.dart` — konverter romanisasi → Hangul.
 
+## Tampilan & haptic
+
+Buka ikon ⚙ di Home. Tema mengikuti sistem secara default, atau pilih Terang/Gelap permanen. Haptic feedback aktif secara default dan dapat dimatikan dari halaman yang sama.
+
+Ikon launcher digenerate dari `tool/generate_icon.py` ke `assets/icon/`. Untuk regenerate setelah mengubah desain:
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install pillow
+.venv/bin/python tool/generate_icon.py
+dart run flutter_launcher_icons
+```
+
 ## Pembaruan aplikasi
 
 Pembaruan tidak lewat Play Store. App membaca manifest publik, mengunduh APK rilis, memverifikasi checksum, lalu membuka installer Android.
 
 - Manifest: `https://raw.githubusercontent.com/mahfudinkerja/volingo-korean-releases/main/update.json`
 - Kanal rilis: `https://github.com/mahfudinkerja/volingo-korean-releases`
+- Rilis terbaru: v1.2.0 (`versionCode 4`)
 - Izin Android yang dipakai: `INTERNET`, `REQUEST_INSTALL_PACKAGES`, dan FileProvider untuk membagikan file APK ke installer.
 
 Alur rilis baru:

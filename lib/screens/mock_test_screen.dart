@@ -54,20 +54,23 @@ class _MockTestScreenState extends State<MockTestScreen> {
                     fontSize: 10,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 1,
-                    color: AppColors.muted,
+                    color: AppColors.onHeroMuted,
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   '20 soal.\n20 menit.',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge
+                      ?.copyWith(color: AppColors.onHero),
                 ),
                 const SizedBox(height: 10),
                 const Text(
                   'Kosakata dan pola dari A0 sampai C2. Tanpa bantuan, tanpa jeda — rasakan tekanan hari-H.',
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.muted,
+                    color: AppColors.onHeroMuted,
                     height: 1.5,
                   ),
                 ),
@@ -130,7 +133,7 @@ class _MockTestScreenState extends State<MockTestScreen> {
           const SizedBox(height: 22),
           FilledButton.icon(
             onPressed: starting ? null : _start,
-            icon: const Icon(Icons.play_arrow_rounded),
+            icon: Icon(Icons.play_arrow_rounded),
             label: const Text('Mulai simulasi'),
           ),
           const SizedBox(height: 10),

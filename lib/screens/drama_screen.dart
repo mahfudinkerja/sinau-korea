@@ -37,16 +37,16 @@ class DramaScreen extends StatelessWidget {
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
                             letterSpacing: 0.7,
-                            color: AppColors.muted,
+                            color: AppColors.onHeroMuted,
                           ),
                         ),
                         const Spacer(),
                         Text(
                           '$done/${dramaPhrases.length}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.rose,
+                            color: AppColors.onHero,
                           ),
                         ),
                       ],
@@ -54,14 +54,17 @@ class DramaScreen extends StatelessWidget {
                     const SizedBox(height: 14),
                     Text(
                       '18 frasa yang\nsering muncul.',
-                      style: Theme.of(context).textTheme.headlineLarge,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge
+                          ?.copyWith(color: AppColors.onHero),
                     ),
                     const SizedBox(height: 8),
                     const Text(
                       'Centang frasa yang sudah kamu kenali dari drama. Ulangi lewat SRS agar nempel dalam konteks.',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.muted,
+                        color: AppColors.onHeroMuted,
                         height: 1.5,
                       ),
                     ),
@@ -70,7 +73,7 @@ class DramaScreen extends StatelessWidget {
                       value: dramaPhrases.isEmpty
                           ? 0
                           : done / dramaPhrases.length,
-                      color: AppColors.rose,
+                      color: const Color(0xFFFF8FA3),
                     ),
                   ],
                 ),
@@ -98,7 +101,7 @@ class DramaScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Text(
                             '${i + 1}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w800,
                               color: AppColors.rose,
@@ -156,7 +159,7 @@ class DramaScreen extends StatelessWidget {
                                   Flexible(
                                     child: Text(
                                       phrase.ko,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -165,7 +168,7 @@ class DramaScreen extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   Text(
                                     phrase.roman,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.primary,
                                     ),
@@ -175,7 +178,7 @@ class DramaScreen extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 phrase.id,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.mint,

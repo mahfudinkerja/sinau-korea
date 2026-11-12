@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../services/haptics.dart';
 import '../theme.dart';
 
 class AppCard extends StatelessWidget {
@@ -37,7 +38,10 @@ class AppCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
+        onTap: () {
+          Haptics.selection();
+          onTap!();
+        },
         child: content,
       ),
     );
@@ -166,7 +170,7 @@ class StatBox extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.3,
@@ -182,24 +186,25 @@ class StatBox extends StatelessWidget {
 
 class ProgressLine extends StatelessWidget {
   final double value;
-  final Color color;
+  final Color? color;
   final double height;
   const ProgressLine({
     super.key,
     required this.value,
-    this.color = AppColors.mint,
+    this.color,
     this.height = 8,
   });
 
   @override
   Widget build(BuildContext context) {
+    final resolved = color ?? AppColors.mint;
     return ClipRRect(
       borderRadius: BorderRadius.circular(height),
       child: LinearProgressIndicator(
         value: value.clamp(0, 1),
         minHeight: height,
-        backgroundColor: Colors.white.withValues(alpha: 0.12),
-        valueColor: AlwaysStoppedAnimation<Color>(color),
+        backgroundColor: AppColors.track,
+        valueColor: AlwaysStoppedAnimation<Color>(resolved),
       ),
     );
   }
@@ -263,7 +268,7 @@ class ToolTile extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             title,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

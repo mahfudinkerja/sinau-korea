@@ -17,11 +17,22 @@ class VolingoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Volingo Korean',
-      debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(),
-      home: RootShell(state: state),
+    return ListenableBuilder(
+      listenable: state,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'Volingo Korean',
+          debugShowCheckedModeBanner: false,
+          theme: buildLightTheme(),
+          darkTheme: buildAppTheme(),
+          themeMode: state.themeMode,
+          builder: (context, child) {
+            AppColors.apply(Theme.of(context).brightness);
+            return child ?? const SizedBox.shrink();
+          },
+          home: RootShell(state: state),
+        );
+      },
     );
   }
 }

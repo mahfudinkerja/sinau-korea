@@ -46,7 +46,7 @@ class ReadingListScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.chevron_right_rounded,
                           color: AppColors.muted,
                         ),
@@ -55,7 +55,7 @@ class ReadingListScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       reading.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                       ),
@@ -137,7 +137,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                   children: [
                     Text(
                       sentence.ko,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
                         height: 1.6,
@@ -157,7 +157,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
           const SizedBox(height: 10),
           OutlinedButton.icon(
             onPressed: () => setState(() => showTranslation = !showTranslation),
-            icon: const Icon(Icons.translate_rounded, size: 18),
+            icon: Icon(Icons.translate_rounded, size: 18),
             label: Text(
               showTranslation ? 'Sembunyikan terjemahan' : 'Tampilkan terjemahan',
             ),
@@ -176,7 +176,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 ),
               );
             },
-            icon: const Icon(Icons.quiz_rounded, size: 19),
+            icon: Icon(Icons.quiz_rounded, size: 19),
             label: Text('Cek pemahaman · ${reading.questions.length} soal'),
           ),
           const SizedBox(height: 10),

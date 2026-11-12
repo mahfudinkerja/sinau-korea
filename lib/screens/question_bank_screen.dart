@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/vocab_data.dart';
 import '../services/app_state.dart';
+import '../services/haptics.dart';
 import '../services/quiz_factory.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
@@ -63,12 +64,15 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
                 const SizedBox(height: 10),
                 Text(
                   '10 soal per set',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(color: AppColors.onHero),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Tiga tipe soal: arti kosakata, romanisasi → Hangul, dan arti → Hangul. Langsung dinilai dengan penjelasan.',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFFD7DFFF),
                     height: 1.5,
@@ -87,7 +91,10 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
                 ChoiceChip(
                   label: Text(level),
                   selected: selected == level,
-                  onSelected: (_) => setState(() => selected = level),
+                  onSelected: (_) {
+                    Haptics.selection();
+                    setState(() => selected = level);
+                  },
                 ),
             ],
           ),
@@ -104,7 +111,7 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
                     ),
                     Text(
                       '${pool.length} kata',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                       ),
@@ -121,7 +128,7 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
                     ),
                     Text(
                       '${widget.state.accuracy}%',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: AppColors.mint,
@@ -139,7 +146,7 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
                     ),
                     Text(
                       '${widget.state.totalAnswered}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                       ),
@@ -152,7 +159,7 @@ class _QuestionBankScreenState extends State<QuestionBankScreen> {
           const SizedBox(height: 20),
           FilledButton.icon(
             onPressed: _start,
-            icon: const Icon(Icons.play_arrow_rounded),
+            icon: Icon(Icons.play_arrow_rounded),
             label: const Text('Mulai 10 soal'),
           ),
           const SizedBox(height: 12),

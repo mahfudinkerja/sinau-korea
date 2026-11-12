@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../services/app_state.dart';
+import '../services/haptics.dart';
+import '../theme.dart';
 import 'home_screen.dart';
 import 'practice_screen.dart';
 import 'review_screen.dart';
@@ -17,10 +19,15 @@ class RootShell extends StatefulWidget {
 class _RootShellState extends State<RootShell> {
   int index = 0;
 
-  void _open(int target) => setState(() => index = target);
+  void _open(int target) {
+    if (target == index) return;
+    Haptics.selection();
+    setState(() => index = target);
+  }
 
   @override
   Widget build(BuildContext context) {
+    AppColors.apply(Theme.of(context).brightness);
     return ListenableBuilder(
       listenable: widget.state,
       builder: (context, _) {
@@ -55,12 +62,12 @@ class _RootShellState extends State<RootShell> {
                 icon: Badge(
                   isLabelVisible: widget.state.dueCount > 0,
                   label: Text('${widget.state.dueCount}'),
-                  child: const Icon(Icons.style_outlined),
+                  child: Icon(Icons.style_outlined),
                 ),
                 selectedIcon: Badge(
                   isLabelVisible: widget.state.dueCount > 0,
                   label: Text('${widget.state.dueCount}'),
-                  child: const Icon(Icons.style_rounded),
+                  child: Icon(Icons.style_rounded),
                 ),
                 label: 'Review',
               ),

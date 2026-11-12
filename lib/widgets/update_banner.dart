@@ -55,7 +55,7 @@ class _UpdateBannerState extends State<UpdateBanner> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             colors: [Color(0xFF21305A), Color(0xFF152033)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -74,10 +74,10 @@ class _UpdateBannerState extends State<UpdateBanner> {
                 color: AppColors.primary.withValues(alpha: 0.16),
                 borderRadius: BorderRadius.circular(11),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.system_update_alt_rounded,
                 size: 19,
-                color: AppColors.primary,
+                color: AppColors.onHero,
               ),
             ),
             const SizedBox(width: 11),
@@ -87,15 +87,19 @@ class _UpdateBannerState extends State<UpdateBanner> {
                 children: [
                   Text(
                     'Pembaruan v${current.versionName} tersedia',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
+                      color: AppColors.onHero,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     'Unduh dan pasang langsung dari aplikasi.',
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: AppColors.onHeroMuted),
                   ),
                 ],
               ),
@@ -104,15 +108,15 @@ class _UpdateBannerState extends State<UpdateBanner> {
             Text(
               'Perbarui',
               style: TextStyle(
-                color: AppColors.primary,
+                color: AppColors.onHero,
                 fontWeight: FontWeight.w700,
                 fontSize: 12,
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right_rounded,
               size: 18,
-              color: AppColors.primary,
+              color: AppColors.onHero,
             ),
           ],
         ),

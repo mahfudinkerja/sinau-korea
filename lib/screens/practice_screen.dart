@@ -92,20 +92,23 @@ class PracticeScreen extends StatelessWidget {
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1,
-                          color: AppColors.muted,
+                          color: AppColors.onHeroMuted,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'Latihan yang langsung dinilai.',
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(color: AppColors.onHero),
                       ),
                       const SizedBox(height: 6),
                       const Text(
                         'Setiap jawaban masuk ke statistik dan XP harianmu.',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.muted,
+                          color: AppColors.onHeroMuted,
                           height: 1.45,
                         ),
                       ),
@@ -125,17 +128,17 @@ class PracticeScreen extends StatelessWidget {
                     children: [
                       Text(
                         '${state.accuracy}%',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
+                          color: AppColors.onHero,
                         ),
                       ),
                       const Text(
                         'akurasi',
                         style: TextStyle(
                           fontSize: 9,
-                          color: AppColors.muted,
+                          color: AppColors.onHeroMuted,
                         ),
                       ),
                     ],
@@ -171,7 +174,7 @@ class PracticeScreen extends StatelessWidget {
           AppCard(
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.info_outline_rounded,
                   size: 18,
                   color: AppColors.muted,

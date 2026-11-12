@@ -36,14 +36,20 @@ class RoadmapScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Text('한', style: TextStyle(fontSize: 34)),
+                        const Text(
+                          '한',
+                          style: TextStyle(
+                            fontSize: 34,
+                            color: AppColors.onHero,
+                          ),
+                        ),
                         const Spacer(),
                         Text(
                           '${state.lessonsDone}/${state.totalLessons} modul',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.muted,
+                            color: AppColors.onHeroMuted,
                           ),
                         ),
                       ],
@@ -51,14 +57,17 @@ class RoadmapScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(
                       'Hangul → C2',
-                      style: Theme.of(context).textTheme.headlineLarge,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge
+                          ?.copyWith(color: AppColors.onHero),
                     ),
                     const SizedBox(height: 6),
                     const Text(
                       'Jalur bertingkat mengikuti TOPIK. Selesaikan modul, lalu kunci dengan kuis dan SRS.',
                       style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.muted,
+                        color: AppColors.onHeroMuted,
                         height: 1.5,
                       ),
                     ),
@@ -67,9 +76,9 @@ class RoadmapScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       '${(state.overallProgress * 100).round()}% perjalanan selesai',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.muted,
+                        color: AppColors.onHeroMuted,
                       ),
                     ),
                   ],
@@ -112,7 +121,7 @@ class _LevelSection extends StatelessWidget {
                   children: [
                     Text(
                       level.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                       ),
@@ -170,7 +179,7 @@ class _LevelSection extends StatelessWidget {
                         children: [
                           Text(
                             lesson.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                             ),
@@ -186,7 +195,7 @@ class _LevelSection extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Icon(
+                    Icon(
                       Icons.chevron_right_rounded,
                       color: AppColors.muted,
                       size: 20,

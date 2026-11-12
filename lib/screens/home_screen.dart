@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/drama_data.dart';
 import '../data/lessons_data.dart';
 import '../services/app_state.dart';
+import '../services/haptics.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/update_banner.dart';
@@ -11,7 +12,7 @@ import 'drama_screen.dart';
 import 'hangul_tool_screen.dart';
 import 'lesson_screen.dart';
 import 'question_bank_screen.dart';
-import 'update_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final AppState state;
@@ -46,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           colors: [AppColors.primary, AppColors.indigo],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -82,15 +83,15 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                     IconButton(
-                      tooltip: 'Pembaruan aplikasi',
+                      tooltip: 'Pengaturan',
                       visualDensity: VisualDensity.compact,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const UpdateScreen(),
+                          builder: (_) => SettingsScreen(state: state),
                         ),
                       ),
-                      icon: const Icon(
-                        Icons.system_update_alt_rounded,
+                      icon: Icon(
+                        Icons.settings_rounded,
                         size: 20,
                         color: AppColors.muted,
                       ),
@@ -112,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(width: 5),
                           Text(
                             '${state.streak}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w800,
                             ),
@@ -131,11 +132,15 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 22),
                 if (next != null)
                   GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => LessonScreen(lesson: next, state: state),
-                      ),
-                    ),
+                    onTap: () {
+                      Haptics.selection();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              LessonScreen(lesson: next, state: state),
+                        ),
+                      );
+                    },
                     child: GradientPanel(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,6 +162,7 @@ class HomeScreen extends StatelessWidget {
                                     fontSize: 10,
                                     fontWeight: FontWeight.w800,
                                     letterSpacing: 0.7,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
@@ -167,12 +173,15 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(height: 16),
                           Text(
                             next.title,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(color: AppColors.onHero),
                           ),
                           const SizedBox(height: 6),
                           Text(
                             next.description,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               color: Color(0xFFD7DFFF),
                               height: 1.5,
@@ -189,7 +198,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 12),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_rounded,
                                 size: 19,
                                 color: Colors.white,
@@ -199,7 +208,7 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text(
                             '${(state.overallProgress * 100).round()}% roadmap selesai · ${state.lessonsDone}/${state.totalLessons} modul',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               color: Color(0xFFC9D4FF),
                             ),
@@ -259,7 +268,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.local_fire_department_rounded,
                             size: 18,
                             color: AppColors.rose,
@@ -275,7 +284,7 @@ class HomeScreen extends StatelessWidget {
                           const Spacer(),
                           Text(
                             '${state.dailyXp} / 50 XP',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                               color: AppColors.mint,
@@ -313,7 +322,7 @@ class HomeScreen extends StatelessWidget {
                           color: AppColors.primary.withValues(alpha: 0.14),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.style_rounded,
                           color: AppColors.primary,
                         ),
@@ -351,7 +360,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         child: Text(
                           '${state.dueCount}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppColors.mint,
                             fontWeight: FontWeight.w800,
                           ),
@@ -399,7 +408,7 @@ class HomeScreen extends StatelessWidget {
                               lessons.isEmpty
                                   ? level.exam
                                   : '$done/${lessons.length} modul',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
                                 color: AppColors.muted,
                               ),
@@ -416,8 +425,8 @@ class HomeScreen extends StatelessWidget {
                   subtitle: 'Kosakata dari drakor, langsung kepakai.',
                 ),
                 AppCard(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1A2335), Color(0xFF111823)],
+                  gradient: LinearGradient(
+                    colors: [AppColors.panelStart, AppColors.panelEnd],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -438,16 +447,17 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       Text(
                         phrase.ko,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.3,
+                          color: AppColors.text,
                         ),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         phrase.roman,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           color: AppColors.primary,
                           fontWeight: FontWeight.w600,
@@ -456,9 +466,10 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(height: 9),
                       Text(
                         phrase.id,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
+                          color: AppColors.text,
                         ),
                       ),
                       const SizedBox(height: 7),

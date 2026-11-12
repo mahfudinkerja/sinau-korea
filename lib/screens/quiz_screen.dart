@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models.dart';
 import '../services/app_state.dart';
+import '../services/haptics.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 
@@ -70,6 +71,11 @@ class _QuizScreenState extends State<QuizScreen> {
       if (isCorrect) correct++;
     });
     widget.state.recordAnswer(isCorrect);
+    if (isCorrect) {
+      Haptics.success();
+    } else {
+      Haptics.error();
+    }
   }
 
   void _next() {
@@ -188,16 +194,16 @@ class _QuizScreenState extends State<QuizScreen> {
           children: [
             Text(
               'Soal ${index + 1}',
-              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
             ),
             Text(
               ' / ${widget.questions.length}',
-              style: const TextStyle(color: AppColors.muted, fontSize: 14),
+              style: TextStyle(color: AppColors.muted, fontSize: 14),
             ),
             const Spacer(),
             Text(
               widget.subtitle,
-              style: const TextStyle(color: AppColors.muted, fontSize: 12),
+              style: TextStyle(color: AppColors.muted, fontSize: 12),
             ),
           ],
         ),
@@ -215,7 +221,7 @@ class _QuizScreenState extends State<QuizScreen> {
             children: [
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.quiz_outlined,
                     size: 17,
                     color: AppColors.primary,
@@ -232,7 +238,7 @@ class _QuizScreenState extends State<QuizScreen> {
               const SizedBox(height: 16),
               Text(
                 current.prompt,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   height: 1.45,
@@ -285,7 +291,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       Expanded(
                         child: Text(
                           option,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                             height: 1.35,
@@ -320,7 +326,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       selected == current.answerIndex
                           ? 'Tepat!'
                           : 'Belum tepat',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                       ),
@@ -378,7 +384,7 @@ class _QuizScreenState extends State<QuizScreen> {
               children: [
                 Text(
                   '$percent%',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -1,
@@ -424,7 +430,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 children: [
                   Text(
                     '${i + 1}. ${q.prompt}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       height: 1.4,
@@ -434,7 +440,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.check_circle_rounded,
                         size: 16,
                         color: AppColors.mint,
@@ -443,7 +449,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       Expanded(
                         child: Text(
                           q.options[q.answerIndex],
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             color: AppColors.mint,
                             fontWeight: FontWeight.w600,

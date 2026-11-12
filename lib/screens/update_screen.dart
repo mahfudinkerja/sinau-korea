@@ -151,22 +151,25 @@ class _UpdateScreenState extends State<UpdateScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
+                Icon(
                   Icons.system_update_alt_rounded,
-                  color: AppColors.primary,
+                  color: AppColors.onHero,
                   size: 26,
                 ),
                 const SizedBox(height: 10),
                 Text(
                   'Selalu versi terbaru.',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(color: AppColors.onHero),
                 ),
                 const SizedBox(height: 6),
                 const Text(
                   'App mengecek manifest rilis setiap dibuka. Unduhan diverifikasi SHA-256 sebelum installer Android dibuka.',
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.muted,
+                    color: AppColors.onHeroMuted,
                     height: 1.5,
                   ),
                 ),
@@ -178,7 +181,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
             padding: const EdgeInsets.all(15),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.smartphone_rounded,
                   size: 19,
                   color: AppColors.muted,
@@ -228,7 +231,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.error_outline_rounded,
                     color: AppColors.rose,
                     size: 19,
@@ -257,7 +260,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.info_outline_rounded,
                       size: 17,
                       color: AppColors.amber,
@@ -296,7 +299,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
               color: AppColors.mint.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.check_rounded,
               color: AppColors.mint,
               size: 30,
@@ -336,7 +339,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   color: AppColors.mint.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(7),
                 ),
-                child: const Text(
+                child: Text(
                   'UPDATE TERSEDIA',
                   style: TextStyle(
                     fontSize: 9,
@@ -349,7 +352,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
               const Spacer(),
               Text(
                 'v${info.versionName}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: AppColors.primary,
                 ),
@@ -359,7 +362,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           const SizedBox(height: 14),
           Text(
             'Versi ${info.versionName} siap dipasang',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
           ),
           if (info.notes.isNotEmpty) ...[
             const SizedBox(height: 8),
@@ -371,7 +374,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           const SizedBox(height: 10),
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.inventory_2_outlined,
                 size: 14,
                 color: AppColors.muted,
@@ -382,7 +385,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(width: 14),
-              const Icon(
+              Icon(
                 Icons.verified_outlined,
                 size: 14,
                 color: AppColors.muted,
@@ -433,14 +436,14 @@ class _UpdateScreenState extends State<UpdateScreen> {
           if (permissionNeeded) ...[
             FilledButton.icon(
               onPressed: () => UpdateInstaller.openInstallSettings(),
-              icon: const Icon(Icons.settings_rounded, size: 19),
+              icon: Icon(Icons.settings_rounded, size: 19),
               label: const Text('Buka pengaturan izin'),
             ),
             if (downloadedFile != null) ...[
               const SizedBox(height: 9),
               OutlinedButton.icon(
                 onPressed: installing ? null : () => _install(downloadedFile!),
-                icon: const Icon(Icons.install_mobile_rounded, size: 19),
+                icon: Icon(Icons.install_mobile_rounded, size: 19),
                 label: Text(
                   installing ? 'Membuka installer...' : 'Pasang sekarang',
                 ),
@@ -458,7 +461,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                         color: Colors.white,
                       ),
                     )
-                  : const Icon(Icons.download_rounded, size: 19),
+                  : Icon(Icons.download_rounded, size: 19),
               label: Text(
                 downloading
                     ? 'Mengunduh...'

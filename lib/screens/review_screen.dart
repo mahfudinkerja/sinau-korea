@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models.dart';
 import '../services/app_state.dart';
+import '../services/haptics.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 
@@ -47,6 +48,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 
   void _rate(SrsRating rating) {
+    if (rating == SrsRating.again) {
+      Haptics.medium();
+    } else {
+      Haptics.light();
+    }
     widget.state.rateCard(session[index], rating);
     setState(() {
       reviewed++;
@@ -68,7 +74,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
           IconButton(
             onPressed: _startDue,
             tooltip: 'Muat ulang kartu jatuh tempo',
-            icon: const Icon(Icons.refresh_rounded),
+            icon: Icon(Icons.refresh_rounded),
           ),
         ],
       ),
@@ -107,11 +113,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
           children: [
             Text(
               'Kartu ${index + 1}',
-              style: const TextStyle(fontWeight: FontWeight.w800),
+              style: TextStyle(fontWeight: FontWeight.w800),
             ),
             Text(
               ' / ${session.length}',
-              style: const TextStyle(color: AppColors.muted),
+              style: TextStyle(color: AppColors.muted),
             ),
             const Spacer(),
             Text(
@@ -128,14 +134,17 @@ class _ReviewScreenState extends State<ReviewScreen> {
         ),
         const SizedBox(height: 22),
         GestureDetector(
-          onTap: () => setState(() => revealed = true),
+          onTap: () {
+            Haptics.selection();
+            setState(() => revealed = true);
+          },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 220),
             padding: const EdgeInsets.all(24),
             constraints: const BoxConstraints(minHeight: 300),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF1B2740), Color(0xFF111823)],
+              gradient: LinearGradient(
+                colors: [AppColors.panelStart, AppColors.panelEnd],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -164,17 +173,18 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   child: Text(
                     vocab.hangul,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 42,
                       fontWeight: FontWeight.w700,
                       height: 1.25,
                       letterSpacing: -0.5,
+                      color: AppColors.text,
                     ),
                   ),
                 ),
                 const SizedBox(height: 10),
                 if (!revealed)
-                  const Center(
+                  Center(
                     child: Text(
                       'Ketuk kartu untuk melihat arti',
                       style: TextStyle(
@@ -187,7 +197,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   Center(
                     child: Text(
                       vocab.roman,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -199,7 +209,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   const SizedBox(height: 14),
                   Text(
                     vocab.meaning,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: AppColors.mint,
@@ -208,7 +218,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   const SizedBox(height: 10),
                   Text(
                     vocab.example,
-                    style: const TextStyle(fontSize: 15, height: 1.5),
+                    style: TextStyle(
+                      fontSize: 15,
+                      height: 1.5,
+                      color: AppColors.text,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -223,8 +237,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
         const SizedBox(height: 20),
         if (!revealed)
           FilledButton.icon(
-            onPressed: () => setState(() => revealed = true),
-            icon: const Icon(Icons.visibility_rounded, size: 19),
+            onPressed: () {
+              Haptics.selection();
+              setState(() => revealed = true);
+            },
+            icon: Icon(Icons.visibility_rounded, size: 19),
             label: const Text('Tampilkan arti'),
           )
         else ...[
@@ -288,7 +305,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 const SizedBox(height: 3),
                 Text(
                   hint,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 9,
                     color: AppColors.muted,
                   ),
@@ -314,7 +331,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
               color: AppColors.mint.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.check_rounded,
               color: AppColors.mint,
               size: 46,
@@ -370,13 +387,13 @@ class _ReviewScreenState extends State<ReviewScreen> {
       children: [
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
           ),
         ),
         const SizedBox(height: 3),
-        Text(label, style: const TextStyle(fontSize: 11, color: AppColors.muted)),
+        Text(label, style: TextStyle(fontSize: 11, color: AppColors.muted)),
       ],
     );
   }

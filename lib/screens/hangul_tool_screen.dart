@@ -55,7 +55,7 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
             autocorrect: false,
             decoration: InputDecoration(
               hintText: 'annyeonghaseyo',
-              prefixIcon: const Icon(Icons.keyboard_rounded, size: 20),
+              prefixIcon: Icon(Icons.keyboard_rounded, size: 20),
               suffixIcon: controller.text.isEmpty
                   ? null
                   : IconButton(
@@ -63,14 +63,14 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
                         controller.clear();
                         _update('');
                       },
-                      icon: const Icon(Icons.close_rounded, size: 18),
+                      icon: Icon(Icons.close_rounded, size: 18),
                     ),
             ),
           ),
           const SizedBox(height: 16),
           AppCard(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF1B2740), Color(0xFF111823)],
+            gradient: LinearGradient(
+              colors: [AppColors.panelStart, AppColors.panelEnd],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -96,7 +96,7 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
                             showSnack(context, 'Hangul disalin.');
                           }
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.copy_rounded,
                           size: 18,
                           color: AppColors.muted,
@@ -150,7 +150,7 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
                             children: [
                               Text(
                                 example.$2,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -158,7 +158,7 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
                               const SizedBox(width: 8),
                               Text(
                                 example.$1,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
                                   color: AppColors.primary,
                                 ),
@@ -173,7 +173,7 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
                         ],
                       ),
                     ),
-                    const Icon(
+                    Icon(
                       Icons.north_west_rounded,
                       size: 16,
                       color: AppColors.muted,
@@ -188,7 +188,7 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
+                Icon(
                   Icons.info_outline_rounded,
                   size: 17,
                   color: AppColors.amber,

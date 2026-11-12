@@ -37,7 +37,7 @@ class DialogListScreen extends StatelessWidget {
                         color: AppColors.cyan.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(13),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.forum_rounded,
                         color: AppColors.cyan,
                         size: 21,
@@ -53,7 +53,7 @@ class DialogListScreen extends StatelessWidget {
                               Flexible(
                                 child: Text(
                                   dialog.title,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -73,7 +73,7 @@ class DialogListScreen extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             '${dialog.lines.length} giliran bicara',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               color: AppColors.primary,
                               fontWeight: FontWeight.w600,
@@ -82,7 +82,7 @@ class DialogListScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Icon(
+                    Icon(
                       Icons.chevron_right_rounded,
                       color: AppColors.muted,
                     ),
@@ -144,7 +144,7 @@ class _DialogScreenState extends State<DialogScreen> {
               const Spacer(),
               Text(
                 focusMode ? 'Fokus Korea' : 'Lengkap',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 11,
                   color: AppColors.primary,
                   fontWeight: FontWeight.w700,
@@ -157,7 +157,7 @@ class _DialogScreenState extends State<DialogScreen> {
             color: AppColors.surfaceAlt,
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.place_outlined,
                   size: 17,
                   color: AppColors.muted,
@@ -237,7 +237,7 @@ class _DialogScreenState extends State<DialogScreen> {
             Text(
               line.ko,
               textAlign: isLeft ? TextAlign.left : TextAlign.right,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 height: 1.45,
@@ -248,7 +248,7 @@ class _DialogScreenState extends State<DialogScreen> {
               Text(
                 line.roman,
                 textAlign: isLeft ? TextAlign.left : TextAlign.right,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 11,
                   color: AppColors.primary,
                 ),

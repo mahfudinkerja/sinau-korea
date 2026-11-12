@@ -79,7 +79,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
                         Expanded(
                           child: Text(
                             grammar.pattern,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
                             ),
@@ -117,7 +117,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
                             children: [
                               Text(
                                 example.ko,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                   height: 1.45,
@@ -144,7 +144,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.warning_amber_rounded,
                               size: 17,
                               color: AppColors.amber,
@@ -153,7 +153,7 @@ class _GrammarScreenState extends State<GrammarScreen> {
                             Expanded(
                               child: Text(
                                 grammar.pitfall,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   height: 1.5,
                                   color: AppColors.muted,

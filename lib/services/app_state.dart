@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/lessons_data.dart';
 import '../data/vocab_data.dart';
 import '../models.dart';
+import 'haptics.dart';
 
 enum SrsRating { again, hard, good, easy }
 
@@ -26,6 +27,8 @@ class AppState extends ChangeNotifier {
   int totalAnswered = 0;
   int totalCorrect = 0;
   int mockBest = 0;
+  ThemeMode themeMode = ThemeMode.system;
+  bool hapticsEnabled = true;
 
   int get lessonsDone => completedLessons.length;
   int get totalLessons => koreanLessons.length;
@@ -74,6 +77,13 @@ class AppState extends ChangeNotifier {
     totalAnswered = _prefs!.getInt('total_answered') ?? 0;
     totalCorrect = _prefs!.getInt('total_correct') ?? 0;
     mockBest = _prefs!.getInt('mock_best') ?? 0;
+    themeMode = switch (_prefs!.getString('theme_mode')) {
+      'light' => ThemeMode.light,
+      'dark' => ThemeMode.dark,
+      _ => ThemeMode.system,
+    };
+    hapticsEnabled = _prefs!.getBool('haptics_enabled') ?? true;
+    Haptics.enabled = hapticsEnabled;
 
     if (cards.isEmpty) {
       _seedDeck();
@@ -158,6 +168,22 @@ class AppState extends ChangeNotifier {
     _study(xpGain: 20);
   }
 
+  void setThemeMode(ThemeMode mode) {
+    if (themeMode == mode) return;
+    themeMode = mode;
+    Haptics.selection();
+    notifyListeners();
+    _persist();
+  }
+
+  void setHapticsEnabled(bool enabled) {
+    hapticsEnabled = enabled;
+    Haptics.enabled = enabled;
+    if (enabled) Haptics.selection();
+    notifyListeners();
+    _persist();
+  }
+
   void rateCard(Vocab vocab, SrsRating rating) {
     final card = cards.putIfAbsent(vocab.roman, () => SrsCard());
     final now = DateTime.now();
@@ -225,5 +251,11 @@ class AppState extends ChangeNotifier {
     await prefs.setInt('total_answered', totalAnswered);
     await prefs.setInt('total_correct', totalCorrect);
     await prefs.setInt('mock_best', mockBest);
+    await prefs.setString('theme_mode', switch (themeMode) {
+      ThemeMode.light => 'light',
+      ThemeMode.dark => 'dark',
+      ThemeMode.system => 'system',
+    });
+    await prefs.setBool('haptics_enabled', hapticsEnabled);
   }
 }

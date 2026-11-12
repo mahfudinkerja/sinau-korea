@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/vocab_data.dart';
 import '../models.dart';
 import '../services/app_state.dart';
+import '../services/haptics.dart';
 import '../services/quiz_factory.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
@@ -19,6 +20,7 @@ class LessonScreen extends StatefulWidget {
 
 class _LessonScreenState extends State<LessonScreen> {
   Future<void> _startQuiz() async {
+    Haptics.light();
     final questions = buildLessonQuiz(widget.lesson);
     if (questions.isEmpty) {
       showSnack(context, 'Kuis untuk modul ini belum tersedia.');
@@ -47,8 +49,8 @@ class _LessonScreenState extends State<LessonScreen> {
         title: const Text('Modul belajar'),
         actions: [
           if (completed)
-            const Padding(
-              padding: EdgeInsets.only(right: 18),
+            Padding(
+              padding: const EdgeInsets.only(right: 18),
               child: Icon(Icons.verified_rounded, color: AppColors.mint),
             ),
         ],
@@ -84,7 +86,7 @@ class _LessonScreenState extends State<LessonScreen> {
               padding: const EdgeInsets.all(14),
               child: Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.check_circle_rounded,
                     color: AppColors.mint,
                     size: 19,
@@ -112,7 +114,7 @@ class _LessonScreenState extends State<LessonScreen> {
                   children: [
                     Text(
                       section.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
@@ -142,7 +144,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                 flex: 3,
                                 child: Text(
                                   example.ko,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     height: 1.5,
@@ -192,7 +194,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                 Flexible(
                                   child: Text(
                                     item.hangul,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -201,7 +203,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                 const SizedBox(width: 9),
                                 Text(
                                   item.roman,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w600,
@@ -212,7 +214,7 @@ class _LessonScreenState extends State<LessonScreen> {
                           ),
                           Text(
                             item.meaning,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: AppColors.mint,
@@ -238,7 +240,7 @@ class _LessonScreenState extends State<LessonScreen> {
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
           child: FilledButton.icon(
             onPressed: _startQuiz,
-            icon: const Icon(Icons.play_arrow_rounded),
+            icon: Icon(Icons.play_arrow_rounded),
             label: Text(completed ? 'Ulangi kuis modul' : 'Mulai kuis modul'),
           ),
         ),
