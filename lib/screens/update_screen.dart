@@ -101,7 +101,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           downloading = false;
           permissionNeeded = true;
           installMessage =
-              'Izinkan "Install unknown apps" untuk Volingo Korean, lalu kembali dan tekan Pasang sekarang.';
+              'Izinkan "Install unknown apps" untuk Sinau Korea, lalu kembali dan tekan Pasang sekarang.';
         });
         await UpdateInstaller.openInstallSettings();
         return;
@@ -130,7 +130,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
         case InstallOutcome.permissionRequired:
           permissionNeeded = true;
           installMessage =
-              'Android meminta izin pemasangan. Aktifkan izin untuk Volingo Korean, lalu tekan Pasang sekarang.';
+              'Android meminta izin pemasangan. Aktifkan izin untuk Sinau Korea, lalu tekan Pasang sekarang.';
         case InstallOutcome.failed:
           error =
               'Installer tidak bisa dibuka. Buka pengaturan izin, lalu coba pasang lagi.';

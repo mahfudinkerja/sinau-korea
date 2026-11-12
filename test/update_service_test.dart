@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:volingo_korean/services/update_service.dart';
+import 'package:sinau_korea/services/update_service.dart';
 
 void main() {
   group('UpdateInfo', () {

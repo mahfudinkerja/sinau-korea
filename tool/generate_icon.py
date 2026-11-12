@@ -1,4 +1,4 @@
-"""Generate Volingo Korean launcher assets.
+"""Generate Sinau Korea launcher assets.
 
 Run from the project root:
     .venv/bin/python tool/generate_icon.py

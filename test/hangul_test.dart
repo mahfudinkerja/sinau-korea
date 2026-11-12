@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:volingo_korean/utils/hangul.dart';
+import 'package:sinau_korea/utils/hangul.dart';
 
 void main() {
   group('romanToHangul', () {

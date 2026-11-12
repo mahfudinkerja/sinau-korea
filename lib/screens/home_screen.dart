@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Volingo',
+                          'Sinau Korea',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w800,

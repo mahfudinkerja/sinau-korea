@@ -46,3 +46,6 @@ app.*.map.json
 
 # Local tooling
 .venv/
+
+# Local build artifacts
+/dist/

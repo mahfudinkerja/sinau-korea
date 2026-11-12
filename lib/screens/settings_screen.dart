@@ -185,7 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             const SizedBox(width: 10),
                             const Expanded(
                               child: Text(
-                                'Volingo Korean',
+                                'Sinau Korea',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,

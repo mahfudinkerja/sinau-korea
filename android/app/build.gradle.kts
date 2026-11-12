@@ -6,6 +6,8 @@ plugins {
 }
 
 android {
+    // applicationId dan namespace dipertahankan agar update APK dari versi
+    // sebelumnya tetap terpasang sebagai pembaruan, bukan aplikasi baru.
     namespace = "id.volingo.volingo_korean"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion

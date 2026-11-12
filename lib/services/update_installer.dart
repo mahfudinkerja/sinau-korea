@@ -4,7 +4,7 @@ enum InstallOutcome { started, permissionRequired, failed }
 
 class UpdateInstaller {
   static const MethodChannel _channel =
-      MethodChannel('id.volingo.volingo_korean/updater');
+      MethodChannel('id.sinaukorea/updater');
 
   static Future<bool> canInstall() async {
     try {

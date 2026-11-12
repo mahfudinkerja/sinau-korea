@@ -46,7 +46,7 @@ class _HangulToolScreenState extends State<HangulToolScreen> {
         children: [
           const SectionHeader(
             'Latin → 한글',
-            subtitle: 'Ketik bunyinya, langsung jadi Hangul. Fitur signature Volingo.',
+            subtitle: 'Ketik bunyinya, langsung jadi Hangul. Fitur khas Sinau Korea.',
           ),
           TextField(
             controller: controller,

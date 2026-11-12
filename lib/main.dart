@@ -8,12 +8,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final state = AppState();
   await state.load();
-  runApp(VolingoApp(state: state));
+  runApp(SinauKoreaApp(state: state));
 }
 
-class VolingoApp extends StatelessWidget {
+class SinauKoreaApp extends StatelessWidget {
   final AppState state;
-  const VolingoApp({super.key, required this.state});
+  const SinauKoreaApp({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class VolingoApp extends StatelessWidget {
       listenable: state,
       builder: (context, _) {
         return MaterialApp(
-          title: 'Volingo Korean',
+          title: 'Sinau Korea',
           debugShowCheckedModeBanner: false,
           theme: buildLightTheme(),
           darkTheme: buildAppTheme(),

@@ -112,7 +112,7 @@ class UpdateService {
   }) async {
     final directory = await getTemporaryDirectory();
     final file = File(
-      '${directory.path}/volingo-korean-${info.versionName}.apk',
+      '${directory.path}/sinau-korea-${info.versionName}.apk',
     );
     if (await file.exists()) await file.delete();
 

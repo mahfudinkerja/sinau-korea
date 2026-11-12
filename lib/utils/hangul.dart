@@ -1,5 +1,5 @@
 /// Konversi romanisasi Latin ke Hangul.
-/// Bukan transliterasi sempurna — dirancang untuk latihan ketik cepat ala Volingo,
+/// Bukan transliterasi sempurna — dirancang untuk latihan ketik cepat,
 /// dengan kamus frasa umum dan fallback komposisi suku kata.
 library;
 
