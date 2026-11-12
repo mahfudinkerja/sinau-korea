@@ -1,5 +1,7 @@
 # Sinau Korea
 
+Repo: https://github.com/mahfudinkerja/sinau-korea
+
 Aplikasi belajar bahasa Korea untuk Android dengan alur belajar terstruktur. Dibangun dengan Flutter, berjalan offline, dan menyimpan progres di perangkat.
 
 ## Fitur
