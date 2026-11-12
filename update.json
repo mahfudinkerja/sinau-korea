@@ -1,8 +1,8 @@
 {
-  "versionCode": 4,
-  "versionName": "1.2.0",
-  "apkUrl": "https://github.com/mahfudinkerja/volingo-korean-releases/releases/download/v1.2.0/app-release.apk",
-  "notes": "Ikon aplikasi baru, light mode lengkap (Sistem/Terang/Gelap), halaman Pengaturan, dan haptic feedback saat menjawab kuis, review kartu, serta berpindah tab.",
+  "versionCode": 5,
+  "versionName": "1.3.0",
+  "apkUrl": "https://github.com/mahfudinkerja/volingo-korean-releases/releases/download/v1.3.0/app-release.apk",
+  "notes": "Rebranding ke Sinau Korea, dengan ikon baru, light mode, pengaturan tema, dan haptic feedback.",
   "sizeBytes": 50788754,
-  "sha256": "c6c01c59d95e872e6e02fdb37c1a4378a3fbf1078d50f3446fc1792343e15916"
+  "sha256": "f5001623ab68bc81a4d09e5d35af1cb699cc57627c66e69234c9d35ba147a02f"
 }
