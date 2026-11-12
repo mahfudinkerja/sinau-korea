@@ -1,0 +1,8 @@
+{
+  "versionCode": 3,
+  "versionName": "1.1.1",
+  "apkUrl": "https://github.com/mahfudinkerja/volingo-korean-releases/releases/download/v1.1.1/app-release.apk",
+  "notes": "Pembaruan dalam aplikasi aktif: cek versi otomatis, unduh APK berprogres, verifikasi SHA-256, dan pasang langsung lewat installer Android. Progres belajar tetap tersimpan.",
+  "sizeBytes": 50386553,
+  "sha256": "60f2d2ca7e7bffe3875e2ae14f315736d889fd9679d8cb61cfca3bb793deef50"
+}
