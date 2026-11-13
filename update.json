@@ -1,8 +1,8 @@
 {
-  "versionCode": 5,
-  "versionName": "1.3.0",
-  "apkUrl": "https://github.com/mahfudinkerja/volingo-korean-releases/releases/download/v1.3.0/app-release.apk",
-  "notes": "Rebranding ke Sinau Korea, dengan ikon baru, light mode, pengaturan tema, dan haptic feedback.",
-  "sizeBytes": 50788754,
-  "sha256": "f5001623ab68bc81a4d09e5d35af1cb699cc57627c66e69234c9d35ba147a02f"
+  "versionCode": 6,
+  "versionName": "1.4.0",
+  "apkUrl": "https://github.com/mahfudinkerja/sinau-korea/releases/download/v1.4.0/sinau-korea-1.4.0.apk",
+  "notes": "Mastery modul minimal 70%, jawaban salah otomatis masuk review SRS, perbaikan heading light mode, XP/streak lebih adil, dan updater yang lebih andal.",
+  "sizeBytes": 50969222,
+  "sha256": "7e6607e5273ca916a1d70b4684694591ee6867972e00a168b54b8b1b2778277a"
 }

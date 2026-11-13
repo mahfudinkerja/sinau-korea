@@ -17,7 +17,7 @@ Aplikasi belajar bahasa Korea untuk Android dengan alur belajar terstruktur. Dib
 - **Latihan Kilat Kosakata** — 20 soal kosakata, timer 20 menit. **Bukan** simulasi struktur ujian TOPIK.
 - **K-Drama Pack** — 18 frasa, roadmap 4 minggu, dan checklist.
 - **Ketik Hangul** — konversi romanisasi Latin ke Hangul secara langsung.
-- **Pembaruan dalam aplikasi** — cek manifest, unduh APK berprogres, verifikasi ukuran + SHA-256, lalu buka installer Android. Kanal rilis saat ini **belum aktif** (lihat bagian Pembaruan).
+- **Pembaruan dalam aplikasi** — cek manifest, unduh APK berprogres, verifikasi ukuran + SHA-256, lalu buka installer Android. Kanal rilis aktif lewat GitHub Releases publik.
 - **Light & dark mode** — tema Sistem/Terang/Gelap dengan warna heading eksplisit agar tetap terbaca.
 - **Haptic feedback** — bisa dimatikan.
 - **Adaptive app icon** — ikon ㅎ untuk legacy, adaptive, dan monochrome.
@@ -63,8 +63,8 @@ flutter test
 Pembaruan tidak lewat Play Store. App membaca manifest publik, mengunduh APK rilis, memverifikasi ukuran dan checksum, lalu membuka installer Android.
 
 - Manifest default: `https://raw.githubusercontent.com/mahfudinkerja/sinau-korea/main/update.json`
-- Kanal lama: `https://raw.githubusercontent.com/mahfudinkerja/volingo-korean-releases/main/update.json` (**HTTP 404**)
-- Status: repo `sinau-korea` masih privat, sehingga manifest dan APK tidak dapat diunduh tanpa autentikasi. Updater sudah menampilkan error yang jelas, tetapi kanal baru bisa berfungsi setelah aset rilis dipublikasikan. Lihat [`docs/RELEASING.md`](docs/RELEASING.md).
+- Kanal lama: `https://raw.githubusercontent.com/mahfudinkerja/volingo-korean-releases/main/update.json` (redirect ke repo yang sama)
+- Status: repo dan aset rilis publik. Rilis terbaru **v1.4.0** (`versionCode 6`). App v1.3.0 memakai URL lama, dan redirect GitHub membuat manifest baru tetap terjangkau. Lihat [`docs/RELEASING.md`](docs/RELEASING.md).
 - Izin Android: `INTERNET`, `REQUEST_INSTALL_PACKAGES`, dan FileProvider.
 - `applicationId` sengaja dipertahankan: `id.volingo.volingo_korean`.
 

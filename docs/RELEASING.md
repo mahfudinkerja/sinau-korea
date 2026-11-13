@@ -2,14 +2,14 @@
 
 ## Kondisi saat ini
 
-Updater sudah berfungsi secara kode, tetapi kanal distribusinya belum aktif:
+Kanal distribusi aktif lewat GitHub Releases publik:
 
-- Manifest default: `https://raw.githubusercontent.com/mahfudinkerja/sinau-korea/main/update.json`
-- Repo `sinau-korea` masih **privat** → permintaan tanpa autentikasi menghasilkan 404.
-- Manifest lama di `volingo-korean-releases` juga 404.
-- `update.json` di repo masih menunjuk APK v1.3.0 di repo lama dan belum diperbarui ke v1.4.0 karena aset v1.4.0 belum dipublikasikan. Jangan mengarang URL rilis.
+- Manifest: `https://raw.githubusercontent.com/mahfudinkerja/sinau-korea/main/update.json`
+- Rilis terbaru: **v1.4.0** (`versionCode 6`), aset `sinau-korea-1.4.0.apk`.
+- URL manifest lama (`volingo-korean-releases`) di-redirect GitHub ke repo yang sama, sehingga app v1.3.0 tetap bisa mengecek update.
+- APK v1.4.0 masih memakai debug certificate yang sama dengan v1.3.0. Ini cukup untuk kanal sideload, tetapi belum memenuhi standar distribusi produksi; lihat `docs/SIGNING.md`.
 
-Updater sekarang menampilkan pesan 404 yang jelas, bisa di-retry, memvalidasi ukuran dan SHA-256, serta menghapus file sementara yang gagal.
+Updater memvalidasi URL, `versionCode`, ukuran, dan SHA-256, menampilkan error yang jelas, bisa di-retry, serta menghapus file sementara yang gagal.
 
 ## Yang harus disiapkan pemilik repo
 

@@ -6,7 +6,7 @@
   - **Dengan** `android/key.properties` → memakai signing config `release`.
   - **Tanpa** file tersebut → fallback ke debug key dan menulis peringatan saat build.
 - Tidak ada keystore produksi yang dibuat atau di-commit oleh agen. Pembuatan key adalah keputusan deployment dan harus dilakukan pemilik aplikasi.
-- APK v1.3.0 (`versionCode 5`) yang beredar ditandatangani dengan `CN=Android Debug`.
+- APK v1.3.0 (`versionCode 5`) dan v1.4.0 (`versionCode 6`) yang beredar ditandatangani dengan `CN=Android Debug`. Ini memungkinkan update mempertahankan data, tetapi belum layak untuk distribusi produksi.
 
 ## Membuat keystore produksi (hanya setelah keputusan deploy)
 
