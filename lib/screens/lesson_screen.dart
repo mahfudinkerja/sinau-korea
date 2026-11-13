@@ -33,7 +33,11 @@ class _LessonScreenState extends State<LessonScreen> {
           subtitle: widget.lesson.level,
           questions: questions,
           state: widget.state,
-          onFinished: (_) => widget.state.completeLesson(widget.lesson.id),
+          passingScore: AppState.lessonPassThreshold,
+          onFinished: (result) => widget.state.recordLessonAttempt(
+            widget.lesson.id,
+            result,
+          ),
         ),
       ),
     );
@@ -43,12 +47,15 @@ class _LessonScreenState extends State<LessonScreen> {
   @override
   Widget build(BuildContext context) {
     final vocab = vocabForLesson(widget.lesson.id);
-    final completed = widget.state.completedLessons.contains(widget.lesson.id);
+    final status = widget.state.lessonStatus(widget.lesson.id);
+    final passed = status == LessonStatus.passed;
+    final last = widget.state.lastAttempt(widget.lesson.id);
+    final best = widget.state.bestAttemptPercent(widget.lesson.id);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Modul belajar'),
         actions: [
-          if (completed)
+          if (passed)
             Padding(
               padding: const EdgeInsets.only(right: 18),
               child: Icon(Icons.verified_rounded, color: AppColors.mint),
@@ -78,27 +85,64 @@ class _LessonScreenState extends State<LessonScreen> {
             widget.lesson.description,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          if (completed) ...[
+          const SizedBox(height: 8),
+          Text(
+            'Kelulusan modul: minimal ${AppState.lessonPassThreshold}% pada kuis.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          if (status != LessonStatus.notStarted) ...[
             const SizedBox(height: 16),
             AppCard(
-              color: AppColors.mint.withValues(alpha: 0.08),
-              border: Border.all(color: AppColors.mint.withValues(alpha: 0.3)),
+              color: (passed ? AppColors.mint : AppColors.amber)
+                  .withValues(alpha: 0.08),
+              border: Border.all(
+                color: (passed ? AppColors.mint : AppColors.amber)
+                    .withValues(alpha: 0.3),
+              ),
               padding: const EdgeInsets.all(14),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.check_circle_rounded,
-                    color: AppColors.mint,
-                    size: 19,
+                  Row(
+                    children: [
+                      Icon(
+                        passed
+                            ? Icons.check_circle_rounded
+                            : Icons.replay_circle_filled_rounded,
+                        color: passed ? AppColors.mint : AppColors.amber,
+                        size: 19,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          passed
+                              ? 'Modul lulus. Ulangi kuis kapan saja untuk menguatkan ingatan.'
+                              : 'Belum lulus. Pelajari kembali materinya, lalu coba kuis lagi.',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppColors.text,
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'Modul ini sudah selesai. Ulangi kuis kapan saja untuk menguatkan ingatan.',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.text,
-                          ),
+                  if (last != null) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      'Percobaan terakhir: ${last.correct}/${last.total} benar · ${last.percent}%',
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
+                  ],
+                  if (best != null) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      'Skor terbaik: $best% · riwayat tersimpan: ${widget.state.lessonAttempts[widget.lesson.id]?.length ?? 0} percobaan',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                  const SizedBox(height: 8),
+                  Text(
+                    'Buka kuis untuk melihat pembahasan dan jawaban yang salah.',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
@@ -173,7 +217,8 @@ class _LessonScreenState extends State<LessonScreen> {
             const SizedBox(height: 8),
             const SectionHeader(
               'Kosakata modul',
-              subtitle: 'Otomatis masuk ke dek SRS setelah kamu menyelesaikan kuis.',
+              subtitle:
+                  'Kosakata yang salah di kuis otomatis masuk antrean review.',
             ),
             ...vocab.map(
               (item) => Padding(
@@ -241,7 +286,13 @@ class _LessonScreenState extends State<LessonScreen> {
           child: FilledButton.icon(
             onPressed: _startQuiz,
             icon: Icon(Icons.play_arrow_rounded),
-            label: Text(completed ? 'Ulangi kuis modul' : 'Mulai kuis modul'),
+            label: Text(
+              passed
+                  ? 'Ulangi kuis modul'
+                  : status == LessonStatus.needsReview
+                      ? 'Coba lagi kuis modul'
+                      : 'Mulai kuis modul',
+            ),
           ),
         ),
       ),

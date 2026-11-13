@@ -18,6 +18,21 @@ class RootShell extends StatefulWidget {
 
 class _RootShellState extends State<RootShell> {
   int index = 0;
+  late final AppLifecycleListener _lifecycle;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle = AppLifecycleListener(
+      onResume: widget.state.refreshTimeSensitive,
+    );
+  }
+
+  @override
+  void dispose() {
+    _lifecycle.dispose();
+    super.dispose();
+  }
 
   void _open(int target) {
     if (target == index) return;

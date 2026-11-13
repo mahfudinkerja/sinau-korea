@@ -343,7 +343,7 @@ class HomeScreen extends StatelessWidget {
                             Text(
                               state.dueCount == 0
                                   ? 'Semua kartu sudah dijadwalkan ulang.'
-                                  : '${state.dueCount} kartu siap diulang dengan SM-2.',
+                                  : '${state.dueCount} kartu siap diulang dengan SRS.',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
@@ -493,7 +493,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: ToolTile(
                         title: 'Bank soal',
-                        subtitle: 'TOPIK-style, auto nilai',
+                        subtitle: '3 tipe soal · auto nilai',
                         icon: Icons.quiz_rounded,
                         color: AppColors.amber,
                         onTap: () => Navigator.of(context).push(

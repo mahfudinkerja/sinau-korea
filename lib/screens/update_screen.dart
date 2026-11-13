@@ -22,6 +22,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   UpdateCheckResult? result;
   bool checking = true;
   String? error;
+  bool errorDuringCheck = false;
   bool downloading = false;
   bool installing = false;
   bool permissionNeeded = false;
@@ -31,6 +32,12 @@ class _UpdateScreenState extends State<UpdateScreen> {
   String? installMessage;
 
   UpdateInfo? get available => result?.available ?? widget.initialInfo;
+
+  @override
+  void dispose() {
+    service.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -49,6 +56,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     setState(() {
       checking = true;
       error = null;
+      errorDuringCheck = false;
       installMessage = null;
       permissionNeeded = false;
     });
@@ -66,6 +74,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
       if (!mounted) return;
       setState(() {
         error = e.toString();
+        errorDuringCheck = true;
         checking = false;
       });
     }
@@ -77,6 +86,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     setState(() {
       downloading = true;
       error = null;
+      errorDuringCheck = false;
       installMessage = null;
       received = 0;
       total = info.sizeBytes;
@@ -217,11 +227,13 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 ],
               ),
             )
+          else if (info == null && error != null)
+            _checkErrorView()
           else if (info == null)
             _upToDateView()
           else
             _updateView(info),
-          if (error != null) ...[
+          if (error != null && !(info == null && errorDuringCheck)) ...[
             const SizedBox(height: 14),
             AppCard(
               color: AppColors.rose.withValues(alpha: 0.07),
@@ -248,8 +260,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
             ),
             const SizedBox(height: 10),
             OutlinedButton(
-              onPressed: _downloadAndInstall,
-              child: const Text('Coba lagi'),
+              onPressed: errorDuringCheck ? _check : _downloadAndInstall,
+              child: Text(errorDuringCheck ? 'Cek ulang' : 'Coba lagi'),
             ),
           ],
           const SizedBox(height: 20),
@@ -282,6 +294,47 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _checkErrorView() {
+    return AppCard(
+      color: AppColors.rose.withValues(alpha: 0.07),
+      border: Border.all(color: AppColors.rose.withValues(alpha: 0.28)),
+      child: Column(
+        children: [
+          Container(
+            width: 58,
+            height: 58,
+            decoration: BoxDecoration(
+              color: AppColors.rose.withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.cloud_off_rounded,
+              color: AppColors.rose,
+              size: 28,
+            ),
+          ),
+          const SizedBox(height: 14),
+          const Text(
+            'Pembaruan belum bisa dicek',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            error ?? 'Terjadi kesalahan saat menghubungi server.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton(
+            onPressed: _check,
+            child: const Text('Coba lagi'),
           ),
         ],
       ),

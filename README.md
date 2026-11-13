@@ -7,18 +7,20 @@ Aplikasi belajar bahasa Korea untuk Android dengan alur belajar terstruktur. Dib
 ## Fitur
 
 - **Roadmap Hangul → C2** — 12 modul bertingkat A0–C2 dengan materi, contoh kalimat, kosakata, dan kuis.
-- **SRS Flashcard (SM-2)** — penjadwalan ulang otomatis, rating Lagi/Sulit/Bagus/Mudah.
+- **Mastery modul** — kuis modul wajib minimal **70%** untuk lulus. Percobaan gagal tersimpan sebagai `needs review`, bisa diulang, dan skor serta jawaban salah bisa ditinjau.
+- **SRS Flashcard (SM-2 sederhana)** — rating Lagi/Sulit/Bagus/Mudah, kartu baru/belajar/matang, dan jadwal ulang. Rating bisa diurungkan.
+- **Kuis terhubung SRS** — jawaban kosakata yang salah langsung masuk antrean review dan bank kesalahan; kesalahan non-kosakata masuk bank kesalahan terpisah.
 - **Bank soal** — tiga tipe soal, filter level, penilaian instan, dan pembahasan.
 - **Dialog** — 8 skrip situasi nyata dengan romanisasi, terjemahan, dan mode fokus.
 - **Bacaan** — 5 teks bertingkat dengan terjemahan per kalimat dan kuis pemahaman.
-- **Tata bahasa** — 20 pola dengan rumus, contoh, dan jebakan umum.
-- **Simulasi TOPIK** — 20 soal, timer 20 menit, skor terbaik tersimpan.
+- **Tata bahasa** — 21 pola dengan rumus, contoh, dan jebakan umum.
+- **Latihan Kilat Kosakata** — 20 soal kosakata, timer 20 menit. **Bukan** simulasi struktur ujian TOPIK.
 - **K-Drama Pack** — 18 frasa, roadmap 4 minggu, dan checklist.
 - **Ketik Hangul** — konversi romanisasi Latin ke Hangul secara langsung.
-- **Pembaruan dalam aplikasi** — cek versi saat dibuka, unduh APK berprogres, verifikasi SHA-256, lalu buka installer Android.
-- **Light & dark mode** — tema Sistem/Terang/Gelap di halaman Pengaturan, dengan palet warna adaptif.
-- **Haptic feedback** — getaran saat memilih jawaban, rating kartu SRS, membuka modul, dan berpindah tab; bisa dimatikan.
-- **Adaptive app icon** — ikon ㅎ baru untuk legacy, adaptive, dan monochrome icon Android.
+- **Pembaruan dalam aplikasi** — cek manifest, unduh APK berprogres, verifikasi ukuran + SHA-256, lalu buka installer Android. Kanal rilis saat ini **belum aktif** (lihat bagian Pembaruan).
+- **Light & dark mode** — tema Sistem/Terang/Gelap dengan warna heading eksplisit agar tetap terbaca.
+- **Haptic feedback** — bisa dimatikan.
+- **Adaptive app icon** — ikon ㅎ untuk legacy, adaptive, dan monochrome.
 
 ## Build
 
@@ -30,6 +32,17 @@ flutter build apk --release
 
 APK release dihasilkan di `build/app/outputs/flutter-apk/app-release.apk`.
 
+Untuk kanal pembaruan kustom:
+
+```bash
+flutter build apk --release \
+  --dart-define=UPDATE_MANIFEST_URL=https://contoh-publik.example/update.json
+```
+
+### Signing
+
+Release otomatis memakai keystore produksi bila `android/key.properties` tersedia. Tanpa file itu, build tetap berjalan tetapi memakai **debug key** dan tidak boleh didistribusikan. Lihat [`docs/SIGNING.md`](docs/SIGNING.md).
+
 ## Verifikasi
 
 ```bash
@@ -40,42 +53,27 @@ flutter test
 ## Struktur
 
 - `lib/data/` — kurikulum, kosakata, dialog, bacaan, tata bahasa, frasa drama.
-- `lib/services/` — state/progres (SharedPreferences), SRS, generator soal.
+- `lib/services/` — state/progres (SharedPreferences), SRS, generator soal, updater.
 - `lib/screens/` — dashboard, roadmap, modul, review, dan seluruh layar latihan.
 - `lib/utils/hangul.dart` — konverter romanisasi → Hangul.
-
-## Tampilan & haptic
-
-Buka ikon ⚙ di Home. Tema mengikuti sistem secara default, atau pilih Terang/Gelap permanen. Haptic feedback aktif secara default dan dapat dimatikan dari halaman yang sama.
-
-Ikon launcher digenerate dari `tool/generate_icon.py` ke `assets/icon/`. Untuk regenerate setelah mengubah desain:
-
-```bash
-python3 -m venv .venv && .venv/bin/pip install pillow
-.venv/bin/python tool/generate_icon.py
-dart run flutter_launcher_icons
-```
+- `docs/` — prosedur signing dan rilis.
 
 ## Pembaruan aplikasi
 
-Pembaruan tidak lewat Play Store. App membaca manifest publik, mengunduh APK rilis, memverifikasi checksum, lalu membuka installer Android.
+Pembaruan tidak lewat Play Store. App membaca manifest publik, mengunduh APK rilis, memverifikasi ukuran dan checksum, lalu membuka installer Android.
 
-- Manifest: `https://raw.githubusercontent.com/mahfudinkerja/volingo-korean-releases/main/update.json`
-- Kanal rilis: `https://github.com/mahfudinkerja/volingo-korean-releases`
-- Rilis terbaru: v1.3.0 (`versionCode 5`)
-- Izin Android yang dipakai: `INTERNET`, `REQUEST_INSTALL_PACKAGES`, dan FileProvider untuk membagikan file APK ke installer.
+- Manifest default: `https://raw.githubusercontent.com/mahfudinkerja/sinau-korea/main/update.json`
+- Kanal lama: `https://raw.githubusercontent.com/mahfudinkerja/volingo-korean-releases/main/update.json` (**HTTP 404**)
+- Status: repo `sinau-korea` masih privat, sehingga manifest dan APK tidak dapat diunduh tanpa autentikasi. Updater sudah menampilkan error yang jelas, tetapi kanal baru bisa berfungsi setelah aset rilis dipublikasikan. Lihat [`docs/RELEASING.md`](docs/RELEASING.md).
+- Izin Android: `INTERNET`, `REQUEST_INSTALL_PACKAGES`, dan FileProvider.
+- `applicationId` sengaja dipertahankan: `id.volingo.volingo_korean`.
 
-Alur rilis baru:
+> **Signing:** versi 1.3.0 dan APK debug sebelumnya memakai debug certificate. APK dengan certificate berbeda tidak dapat dipasang sebagai pembaruan. Baca rencana migrasi di `docs/SIGNING.md` sebelum mengganti key.
 
-1. Naikkan `version` dan build number di `pubspec.yaml` (contoh `1.3.1+6`).
-2. Build: `flutter build apk --release`.
-3. Buat GitHub Release di repo rilis dan unggah APK.
-4. Perbarui `update.json` dengan `versionCode`, `versionName`, `apkUrl`, `sizeBytes`, `sha256`, dan catatan rilis.
+## Batasan saat ini
 
-> **applicationId:** `id.volingo.volingo_korean` sengaja dipertahankan setelah rename ke Sinau Korea agar update dari versi lama tetap terpasang sebagai pembaruan, bukan aplikasi duplikat. Repo rilis juga masih memakai nama teknis `volingo-korean-releases`.
-
-> **Signing:** APK rilis saat ini memakai debug keystore Flutter (konfigurasi default). Android hanya mau memasang update dengan package dan signing key yang sama. Jangan ganti keystore selama kanal ini dipakai, dan cadangkan `~/.android/debug.keystore`.
-
-## Batasan
-
-Konten disusun ulang sebagai kurikulum orisinal, bukan salinan materi berbayar produk sumber. Belum ada audio/TTS, akun, sinkronisasi cloud, atau format ujian TOPIK resmi penuh.
+- Belum ada audio/TTS, listening, speaking, writing, notifikasi, atau onboarding.
+- Konten masih 85 kosakata, 12 modul, 21 pola grammar, dan 5 bacaan.
+- Latihan timer kosakata bukan ujian TOPIK resmi.
+- Belum ada export/import progres; ini prasyarat sebelum migrasi signing.
+- Light/dark heading sudah diperbaiki, tetapi audit aksesibilitas menyeluruh (screen reader, font 200%, touch target) belum selesai.

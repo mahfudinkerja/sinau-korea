@@ -23,7 +23,7 @@ class _MockTestScreenState extends State<MockTestScreen> {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => QuizScreen(
-          title: 'Simulasi TOPIK',
+          title: 'Latihan Kilat Kosakata',
           subtitle: '20 menit',
           questions: questions,
           state: widget.state,
@@ -39,7 +39,7 @@ class _MockTestScreenState extends State<MockTestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Simulasi TOPIK')),
+      appBar: AppBar(title: const Text('Latihan Kilat Kosakata')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
@@ -49,7 +49,7 @@ class _MockTestScreenState extends State<MockTestScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'MOCK TEST · TOPIK STYLE',
+                  'LATIHAN KILAT · 20 SOAL',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w800,
@@ -67,7 +67,7 @@ class _MockTestScreenState extends State<MockTestScreen> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Kosakata dan pola dari A0 sampai C2. Tanpa bantuan, tanpa jeda — rasakan tekanan hari-H.',
+                  'Uji ingatan kosakata A0–C2 dengan timer. Ini latihan cepat, bukan simulasi struktur ujian TOPIK.',
                   style: TextStyle(
                     fontSize: 13,
                     color: AppColors.onHeroMuted,
@@ -125,7 +125,8 @@ class _MockTestScreenState extends State<MockTestScreen> {
                 SizedBox(height: 14),
                 _Rule(
                   icon: Icons.workspace_premium_rounded,
-                  text: 'Skor terbaik disimpan di perangkat dan dipakai sebagai patokan progres.',
+                  text:
+                      'Skor terbaik disimpan di perangkat. XP hanya diberikan saat skor terbaikmu meningkat.',
                 ),
               ],
             ),
@@ -134,11 +135,11 @@ class _MockTestScreenState extends State<MockTestScreen> {
           FilledButton.icon(
             onPressed: starting ? null : _start,
             icon: Icon(Icons.play_arrow_rounded),
-            label: const Text('Mulai simulasi'),
+            label: const Text('Mulai latihan'),
           ),
           const SizedBox(height: 10),
           Text(
-            'Gunakan mode ini setelah menyelesaikan minimal 3 modul A1.',
+            'Untuk persiapan TOPIK yang sebenarnya, tunggu modul TOPIK I/II terpisah.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
           ),

@@ -1,0 +1,6 @@
+# Salin file ini menjadi android/key.properties, lalu isi nilainya.
+# Jangan commit key.properties atau file keystore.
+storeFile=sinau-korea-release.jks
+storePassword=ISI_PASSWORD_KEYSTORE
+keyAlias=sinau-korea
+keyPassword=ISI_PASSWORD_KEY

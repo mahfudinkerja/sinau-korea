@@ -100,25 +100,32 @@ ThemeData _buildTheme(bool light) {
     textTheme: base.textTheme
         .apply(bodyColor: text, displayColor: text)
         .copyWith(
+          // Warna eksplisit wajib: TextStyle baru di copyWith tidak mewarisi
+          // warna dari textTheme.apply dan bisa jatuh ke warna default gelap
+          // (putih) saat mode terang.
           headlineLarge: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.w800,
             letterSpacing: -0.6,
             height: 1.15,
+            color: text,
           ),
           headlineMedium: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w800,
             letterSpacing: -0.4,
+            color: text,
           ),
           titleLarge: TextStyle(
             fontSize: 19,
             fontWeight: FontWeight.w700,
             letterSpacing: -0.2,
+            color: text,
           ),
           titleMedium: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w700,
+            color: text,
           ),
           bodyMedium: TextStyle(fontSize: 14, height: 1.5, color: muted),
           bodySmall: TextStyle(fontSize: 12, height: 1.45, color: muted),

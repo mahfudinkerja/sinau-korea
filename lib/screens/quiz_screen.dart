@@ -14,6 +14,7 @@ class QuizScreen extends StatefulWidget {
   final List<QuizQuestion> questions;
   final AppState state;
   final int? timeLimitSeconds;
+  final int? passingScore;
   final void Function(QuizResult)? onFinished;
 
   const QuizScreen({
@@ -23,6 +24,7 @@ class QuizScreen extends StatefulWidget {
     required this.state,
     this.subtitle = 'Latihan',
     this.timeLimitSeconds,
+    this.passingScore,
     this.onFinished,
   });
 
@@ -37,12 +39,14 @@ class _QuizScreenState extends State<QuizScreen> {
   bool finished = false;
   Timer? timer;
   int secondsLeft = 0;
+  late List<int?> picked;
 
   QuizQuestion get current => widget.questions[index];
 
   @override
   void initState() {
     super.initState();
+    picked = List<int?>.filled(widget.questions.length, null);
     if (widget.timeLimitSeconds != null) {
       secondsLeft = widget.timeLimitSeconds!;
       timer = Timer.periodic(const Duration(seconds: 1), (t) {
@@ -68,9 +72,16 @@ class _QuizScreenState extends State<QuizScreen> {
     final isCorrect = option == current.answerIndex;
     setState(() {
       selected = option;
+      picked[index] = option;
       if (isCorrect) correct++;
     });
-    widget.state.recordAnswer(isCorrect);
+    widget.state.recordQuizAnswer(
+      correct: isCorrect,
+      vocabId: current.vocabId,
+      prompt: current.prompt,
+      correctAnswer: current.options[current.answerIndex],
+      explanation: current.explanation,
+    );
     if (isCorrect) {
       Haptics.success();
     } else {
@@ -98,6 +109,7 @@ class _QuizScreenState extends State<QuizScreen> {
       correct,
       widget.questions.length,
       timedOut: timedOut,
+      answers: List<int?>.unmodifiable(picked),
     );
     widget.onFinished?.call(result);
   }
@@ -109,6 +121,7 @@ class _QuizScreenState extends State<QuizScreen> {
       selected = null;
       correct = 0;
       finished = false;
+      picked = List<int?>.filled(widget.questions.length, null);
       if (widget.timeLimitSeconds != null) {
         secondsLeft = widget.timeLimitSeconds!;
         timer = Timer.periodic(const Duration(seconds: 1), (t) {
@@ -357,8 +370,10 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Widget _resultView() {
     final total = widget.questions.length;
-    final result = QuizResult(correct, total);
+    final result = QuizResult(correct, total, answers: picked);
     final percent = result.percent;
+    final passing = widget.passingScore;
+    final passed = passing == null || percent >= passing;
     final emoji = percent >= 85
         ? '훌륭해요!'
         : percent >= 60
@@ -399,6 +414,34 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         ),
         const SizedBox(height: 18),
+        if (passing != null) ...[
+          Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+              decoration: BoxDecoration(
+                color: (passed ? AppColors.mint : AppColors.rose)
+                    .withValues(alpha: 0.13),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: (passed ? AppColors.mint : AppColors.rose)
+                      .withValues(alpha: 0.35),
+                ),
+              ),
+              child: Text(
+                passed
+                    ? 'LULUS · minimal $passing%'
+                    : 'BELUM LULUS · minimal $passing%',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.4,
+                  color: passed ? AppColors.mint : AppColors.rose,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
         Center(
           child: Text(
             emoji,
@@ -412,7 +455,7 @@ class _QuizScreenState extends State<QuizScreen> {
           child: Text(
             result.timedOut
                 ? 'Waktu habis. Soal yang belum dijawab dihitung salah.'
-                : 'Setiap jawaban sudah disimpan ke progresmu.',
+                : 'Jawaban salah otomatis masuk antrean review SRS dan bank kesalahan.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
           ),
@@ -421,6 +464,8 @@ class _QuizScreenState extends State<QuizScreen> {
         SectionHeader('Pembahasan'),
         ...List.generate(widget.questions.length, (i) {
           final q = widget.questions[i];
+          final pickedIndex = i < result.answers.length ? result.answers[i] : null;
+          final pickedWrong = pickedIndex != null && pickedIndex != q.answerIndex;
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: AppCard(
@@ -437,6 +482,40 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
+                  if (pickedWrong) ...[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.cancel_rounded,
+                          size: 16,
+                          color: AppColors.rose,
+                        ),
+                        const SizedBox(width: 7),
+                        Expanded(
+                          child: Text(
+                            'Jawabanmu: ${q.options[pickedIndex]}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.rose,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                  ] else if (pickedIndex == null) ...[
+                    Text(
+                      'Tidak dijawab',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.muted,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                  ],
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

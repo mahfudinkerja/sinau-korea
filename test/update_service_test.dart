@@ -10,19 +10,50 @@ void main() {
         'apkUrl': 'https://example.com/app.apk',
         'notes': 'Perbaikan.',
         'sizeBytes': 50386553,
-        'sha256': 'abc',
+        'sha256': 'a' * 64,
       });
       expect(info.versionCode, 3);
       expect(info.versionName, '1.1.1');
       expect(info.apkUrl, 'https://example.com/app.apk');
       expect(info.sizeBytes, 50386553);
-      expect(info.sha256, 'abc');
+      expect(info.sha256, 'a' * 64);
     });
 
     test('menolak manifest tanpa versionCode atau apkUrl', () {
       expect(() => UpdateInfo.fromJson({}), throwsA(isA<UpdateException>()));
       expect(
         () => UpdateInfo.fromJson({'versionCode': 3}),
+        throwsA(isA<UpdateException>()),
+      );
+    });
+
+    test('menolak URL APK yang bukan http(s)', () {
+      expect(
+        () => UpdateInfo.fromJson({
+          'versionCode': 3,
+          'apkUrl': 'ftp://example.com/app.apk',
+        }),
+        throwsA(isA<UpdateException>()),
+      );
+    });
+
+    test('menolak checksum dengan format salah', () {
+      expect(
+        () => UpdateInfo.fromJson({
+          'versionCode': 3,
+          'apkUrl': 'https://example.com/app.apk',
+          'sha256': 'abc',
+        }),
+        throwsA(isA<UpdateException>()),
+      );
+    });
+
+    test('menolak versionCode nol', () {
+      expect(
+        () => UpdateInfo.fromJson({
+          'versionCode': 0,
+          'apkUrl': 'https://example.com/app.apk',
+        }),
         throwsA(isA<UpdateException>()),
       );
     });
@@ -43,6 +74,17 @@ void main() {
     );
     expect(result.hasUpdate, isTrue);
     expect(result.available!.versionName, '1.2.0');
+  });
+
+  test('manifest default mengarah ke repo kanal baru', () {
+    expect(
+      UpdateService.defaultManifestUrl,
+      contains('mahfudinkerja/sinau-korea'),
+    );
+    expect(
+      UpdateService.defaultManifestUrl,
+      isNot(contains('volingo-korean-releases')),
+    );
   });
 
   test('formatBytes', () {

@@ -47,13 +47,25 @@ class _ReviewScreenState extends State<ReviewScreen> {
     });
   }
 
-  void _rate(SrsRating rating) {
+  void _startMistakes() {
+    setState(() {
+      session = widget.state.mistakeVocab.take(20).toList();
+      index = 0;
+      revealed = false;
+      finished = false;
+      reviewed = 0;
+    });
+  }
+
+  void _rate(BuildContext context, SrsRating rating) {
     if (rating == SrsRating.again) {
       Haptics.medium();
     } else {
       Haptics.light();
     }
-    widget.state.rateCard(session[index], rating);
+    final vocab = session[index];
+    final ratedIndex = index;
+    final undo = widget.state.rateCard(vocab, rating);
     setState(() {
       reviewed++;
       revealed = false;
@@ -63,6 +75,26 @@ class _ReviewScreenState extends State<ReviewScreen> {
         index++;
       }
     });
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text('${vocab.hangul} dijadwalkan ulang.'),
+        action: SnackBarAction(
+          label: 'Urungkan',
+          onPressed: () {
+            widget.state.undoRating(vocab, undo);
+            if (!mounted) return;
+            setState(() {
+              index = ratedIndex;
+              reviewed = reviewed > 0 ? reviewed - 1 : 0;
+              revealed = true;
+              finished = false;
+            });
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -83,20 +115,28 @@ class _ReviewScreenState extends State<ReviewScreen> {
               icon: Icons.nights_stay_rounded,
               title: 'Tidak ada kartu jatuh tempo',
               message:
-                  'Semua kartu sudah dijadwalkan ulang. Kamu tetap bisa memulai sesi acak untuk latihan tambahan.',
-              action: Column(
-                children: [
-                  FilledButton(
-                    onPressed: _startRandom,
-                    child: const Text('Mulai sesi acak · 10 kartu'),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    '${widget.state.cards.length} kartu di dek · ${widget.state.dueCount} jatuh tempo',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
+                  'Semua kartu sudah dijadwalkan ulang. Kamu tetap bisa memulai sesi acak untuk latihan tambahan.',                action: Column(
+                  children: [
+                    if (widget.state.mistakeVocab.isNotEmpty) ...[
+                      FilledButton(
+                        onPressed: _startMistakes,
+                        child: Text(
+                          'Ulangi kesalahan · ${widget.state.mistakeVocab.length} kata',
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                    FilledButton.tonal(
+                      onPressed: _startRandom,
+                      child: const Text('Mulai sesi acak · 10 kartu'),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '${widget.state.cards.length} kartu di dek · ${widget.state.dueCount} jatuh tempo',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
             )
           : finished
               ? _summary(context)
@@ -163,7 +203,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     LevelChip(vocab.level),
                     const Spacer(),
                     Text(
-                      revealed ? 'SM-2 · ${widget.state.cards[vocab.roman]?.reps ?? 0} reps' : 'FLASHCARD',
+                      revealed
+                          ? '${widget.state.cards[vocab.roman]?.stage ?? 'Baru'} · ${widget.state.cards[vocab.roman]?.reps ?? 0} reps'
+                          : 'FLASHCARD',
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ],
@@ -253,13 +295,13 @@ class _ReviewScreenState extends State<ReviewScreen> {
           const SizedBox(height: 10),
           Row(
             children: [
-              _ratingButton('Lagi', '10 mnt', AppColors.rose, SrsRating.again),
+              _ratingButton(context, 'Lagi', '10 mnt', AppColors.rose, SrsRating.again),
               const SizedBox(width: 8),
-              _ratingButton('Sulit', '1+ hari', AppColors.amber, SrsRating.hard),
+              _ratingButton(context, 'Sulit', '1+ hari', AppColors.amber, SrsRating.hard),
               const SizedBox(width: 8),
-              _ratingButton('Bagus', '3 hari', AppColors.primary, SrsRating.good),
+              _ratingButton(context, 'Bagus', '3 hari', AppColors.primary, SrsRating.good),
               const SizedBox(width: 8),
-              _ratingButton('Mudah', '4+ hari', AppColors.mint, SrsRating.easy),
+              _ratingButton(context, 'Mudah', '4+ hari', AppColors.mint, SrsRating.easy),
             ],
           ),
           const SizedBox(height: 14),
@@ -274,6 +316,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 
   Widget _ratingButton(
+    BuildContext context,
     String label,
     String hint,
     Color color,
@@ -284,7 +327,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: () => _rate(rating),
+          onTap: () => _rate(context, rating),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
@@ -348,7 +391,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
         const SizedBox(height: 8),
         Center(
           child: Text(
-            '$reviewed kartu telah dijadwalkan ulang oleh algoritma SM-2.',
+            '$reviewed kartu telah dijadwalkan ulang oleh SRS (SM-2 sederhana).',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),

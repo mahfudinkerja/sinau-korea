@@ -24,14 +24,14 @@ class PracticeScreen extends StatelessWidget {
     final tools = [
       _Tool(
         'Bank Soal',
-        '20.000+ gaya soal · auto nilai',
+        '3 tipe soal · 85 kata',
         Icons.quiz_rounded,
         AppColors.amber,
         () => open(QuestionBankScreen(state: state)),
       ),
       _Tool(
         'Dialog',
-        '8 skrip situasi nyata + role-play',
+        '8 skrip · mode fokus',
         Icons.forum_rounded,
         AppColors.cyan,
         () => open(const DialogListScreen()),
@@ -45,14 +45,14 @@ class PracticeScreen extends StatelessWidget {
       ),
       _Tool(
         'Tata Bahasa',
-        '20 pola, rumus, dan jebakan',
+        '21 pola, rumus, dan jebakan',
         Icons.account_tree_rounded,
         AppColors.mint,
         () => open(const GrammarScreen()),
       ),
       _Tool(
-        'Simulasi TOPIK',
-        '20 soal · 20 menit · skor',
+        'Latihan Kilat',
+        '20 soal kosakata · 20 menit',
         Icons.timer_rounded,
         AppColors.rose,
         () => open(MockTestScreen(state: state)),
@@ -182,7 +182,7 @@ class PracticeScreen extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Bank soal, mock test, dan kuis modul memakai kosakata yang sama dengan dek SRS. Latihan di sini otomatis memperkuat review-mu.',
+                    'Bank soal, latihan kilat, dan kuis modul memakai bank kosakata yang sama dengan SRS. Jawaban salah otomatis masuk antrean review.',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),

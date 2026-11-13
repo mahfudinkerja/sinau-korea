@@ -22,6 +22,7 @@ QuizQuestion _meaningQuestion(Vocab target, List<Vocab> pool, Random random) {
     explanation:
         '"${target.hangul}" berarti ${target.meaning}. Contoh: ${target.example} — ${target.exampleId}',
     hint: target.level,
+    vocabId: target.roman,
   );
 }
 
@@ -38,6 +39,7 @@ QuizQuestion _hangulQuestion(Vocab target, List<Vocab> pool, Random random) {
     explanation:
         '${target.roman} ditulis ${target.hangul}, artinya ${target.meaning}.',
     hint: 'Ketik di tool Hangul untuk mencoba sendiri.',
+    vocabId: target.roman,
   );
 }
 
@@ -54,6 +56,7 @@ QuizQuestion _reverseQuestion(Vocab target, List<Vocab> pool, Random random) {
     explanation:
         '${target.meaning} = ${target.hangul} (${target.roman}). Contoh: ${target.example}',
     hint: target.level,
+    vocabId: target.roman,
   );
 }
 

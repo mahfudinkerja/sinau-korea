@@ -47,18 +47,27 @@ class Lesson {
   });
 }
 
+/// Ambang kelulusan modul. Dipakai oleh AppState dan layar kuis.
+const int kLessonPassThreshold = 70;
+
 class QuizQuestion {
   final String prompt;
   final List<String> options;
   final int answerIndex;
   final String explanation;
   final String? hint;
+
+  /// Kunci kosakata SRS (dipakai [Vocab.roman]) bila soal ini menguji
+  /// kosakata. Null untuk soal grammar, bacaan, atau dialog.
+  final String? vocabId;
+
   const QuizQuestion({
     required this.prompt,
     required this.options,
     required this.answerIndex,
     required this.explanation,
     this.hint,
+    this.vocabId,
   });
 }
 
@@ -144,7 +153,23 @@ class SrsCard {
     DateTime? due,
   }) : due = due ?? DateTime.now();
 
-  bool get isDue => !due.isAfter(DateTime.now());
+  bool get isDue => isDueAt(DateTime.now());
+
+  bool isDueAt(DateTime now) => !due.isAfter(now);
+
+  bool get isNew => reps == 0 && lapses == 0;
+
+  bool get isMature => intervalDays >= 21;
+
+  String get stage => isNew ? 'Baru' : isMature ? 'Matang' : 'Belajar';
+
+  SrsCard copy() => SrsCard(
+    ease: ease,
+    intervalDays: intervalDays,
+    reps: reps,
+    lapses: lapses,
+    due: due,
+  );
 
   Map<String, dynamic> toJson() => {
     'ease': ease,
@@ -177,7 +202,151 @@ class QuizResult {
   final int correct;
   final int total;
   final bool timedOut;
-  const QuizResult(this.correct, this.total, {this.timedOut = false});
+
+  /// Pilihan jawaban pengguna per soal. Null berarti tidak dijawab.
+  final List<int?> answers;
+
+  const QuizResult(
+    this.correct,
+    this.total, {
+    this.timedOut = false,
+    this.answers = const [],
+  });
 
   int get percent => total == 0 ? 0 : ((correct / total) * 100).round();
+
+  bool get passed => percent >= kLessonPassThreshold;
+}
+
+class LessonAttempt {
+  final int correct;
+  final int total;
+  final DateTime at;
+
+  const LessonAttempt({
+    required this.correct,
+    required this.total,
+    required this.at,
+  });
+
+  int get percent => total == 0 ? 0 : ((correct / total) * 100).round();
+
+  bool get passed => percent >= kLessonPassThreshold;
+
+  Map<String, dynamic> toJson() => {
+    'correct': correct,
+    'total': total,
+    'at': at.toIso8601String(),
+  };
+
+  factory LessonAttempt.fromJson(Map<String, dynamic> json) => LessonAttempt(
+    correct: (json['correct'] as num?)?.toInt() ?? 0,
+    total: (json['total'] as num?)?.toInt() ?? 0,
+    at: DateTime.tryParse(json['at'] as String? ?? '') ?? DateTime.now(),
+  );
+
+  static Map<String, List<LessonAttempt>> decodeMap(String? raw) {
+    if (raw == null || raw.isEmpty) return {};
+    try {
+      final map = jsonDecode(raw) as Map<String, dynamic>;
+      return map.map(
+        (key, value) => MapEntry(
+          key,
+          (value as List<dynamic>)
+              .map((e) => LessonAttempt.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        ),
+      );
+    } catch (_) {
+      return {};
+    }
+  }
+}
+
+/// Kesalahan yang perlu diulang. [vocabId] terisi hanya jika kesalahan
+/// benar-benar terkait satu kartu kosakata SRS.
+class MistakeEntry {
+  final String id;
+  final String? vocabId;
+  String prompt;
+  String correctAnswer;
+  String explanation;
+  int count;
+  int correctStreak;
+  DateTime lastAt;
+
+  MistakeEntry({
+    required this.id,
+    this.vocabId,
+    this.prompt = '',
+    this.correctAnswer = '',
+    this.explanation = '',
+    this.count = 0,
+    this.correctStreak = 0,
+    DateTime? lastAt,
+  }) : lastAt = lastAt ?? DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'vocabId': vocabId,
+    'prompt': prompt,
+    'correctAnswer': correctAnswer,
+    'explanation': explanation,
+    'count': count,
+    'correctStreak': correctStreak,
+    'lastAt': lastAt.toIso8601String(),
+  };
+
+  factory MistakeEntry.fromJson(Map<String, dynamic> json) => MistakeEntry(
+    id: json['id'] as String? ?? '',
+    vocabId: json['vocabId'] as String?,
+    prompt: json['prompt'] as String? ?? '',
+    correctAnswer: json['correctAnswer'] as String? ?? '',
+    explanation: json['explanation'] as String? ?? '',
+    count: (json['count'] as num?)?.toInt() ?? 0,
+    correctStreak: (json['correctStreak'] as num?)?.toInt() ?? 0,
+    lastAt: DateTime.tryParse(json['lastAt'] as String? ?? ''),
+  );
+
+  static Map<String, MistakeEntry> decodeMap(String? raw) {
+    if (raw == null || raw.isEmpty) return {};
+    try {
+      final map = jsonDecode(raw) as Map<String, dynamic>;
+      return map.map(
+        (key, value) =>
+            MapEntry(key, MistakeEntry.fromJson(value as Map<String, dynamic>)),
+      );
+    } catch (_) {
+      return {};
+    }
+  }
+}
+
+class VocabStat {
+  int correct;
+  int wrong;
+
+  VocabStat({this.correct = 0, this.wrong = 0});
+
+  int get attempts => correct + wrong;
+
+  Map<String, dynamic> toJson() => {'correct': correct, 'wrong': wrong};
+
+  factory VocabStat.fromJson(Map<String, dynamic> json) => VocabStat(
+    correct: (json['correct'] as num?)?.toInt() ?? 0,
+    wrong: (json['wrong'] as num?)?.toInt() ?? 0,
+  );
+
+  static Map<String, VocabStat> decodeMap(String? raw) {
+    if (raw == null || raw.isEmpty) return {};
+    try {
+      final map = jsonDecode(raw) as Map<String, dynamic>;
+      return map.map(
+        (key, value) =>
+            MapEntry(key, VocabStat.fromJson(value as Map<String, dynamic>)),
+      );
+    } catch (_) {
+      return {};
+    }
+  }
 }
