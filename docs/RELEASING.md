@@ -5,9 +5,9 @@
 Kanal distribusi aktif lewat GitHub Releases publik:
 
 - Manifest: `https://raw.githubusercontent.com/mahfudinkerja/sinau-korea/main/update.json`
-- Rilis terbaru: **v1.4.0** (`versionCode 6`), aset `sinau-korea-1.4.0.apk`.
+- Rilis terbaru: **v1.5.0** (`versionCode 7`), aset `sinau-korea-1.5.0.apk`.
 - URL manifest lama (`volingo-korean-releases`) di-redirect GitHub ke repo yang sama, sehingga app v1.3.0 tetap bisa mengecek update.
-- APK v1.4.0 masih memakai debug certificate yang sama dengan v1.3.0. Ini cukup untuk kanal sideload, tetapi belum memenuhi standar distribusi produksi; lihat `docs/SIGNING.md`.
+- APK v1.4.0 dan v1.5.0 masih memakai debug certificate yang sama dengan v1.3.0. Ini cukup untuk kanal sideload, tetapi belum memenuhi standar distribusi produksi; lihat `docs/SIGNING.md`.
 
 Updater memvalidasi URL, `versionCode`, ukuran, dan SHA-256, menampilkan error yang jelas, bisa di-retry, serta menghapus file sementara yang gagal.
 
@@ -25,9 +25,9 @@ Repo source boleh privat. Yang wajib publik hanya manifest dan APK.
 
 ```json
 {
-  "versionCode": 6,
-  "versionName": "1.4.0",
-  "apkUrl": "https://<host-publik>/<path>/sinau-korea-1.4.0.apk",
+  "versionCode": 7,
+  "versionName": "1.5.0",
+  "apkUrl": "https://<host-publik>/<path>/sinau-korea-1.5.0.apk",
   "notes": "Catatan rilis singkat.",
   "sizeBytes": 12345678,
   "sha256": "<64 karakter hex>"

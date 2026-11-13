@@ -64,7 +64,7 @@ Pembaruan tidak lewat Play Store. App membaca manifest publik, mengunduh APK ril
 
 - Manifest default: `https://raw.githubusercontent.com/mahfudinkerja/sinau-korea/main/update.json`
 - Kanal lama: `https://raw.githubusercontent.com/mahfudinkerja/volingo-korean-releases/main/update.json` (redirect ke repo yang sama)
-- Status: repo dan aset rilis publik. Rilis terbaru **v1.4.0** (`versionCode 6`). App v1.3.0 memakai URL lama, dan redirect GitHub membuat manifest baru tetap terjangkau. Lihat [`docs/RELEASING.md`](docs/RELEASING.md).
+- Status: repo dan aset rilis publik. Rilis terbaru **v1.5.0** (`versionCode 7`). App v1.3.0 memakai URL lama, dan redirect GitHub membuat manifest baru tetap terjangkau. Lihat [`docs/RELEASING.md`](docs/RELEASING.md).
 - Izin Android: `INTERNET`, `REQUEST_INSTALL_PACKAGES`, dan FileProvider.
 - `applicationId` sengaja dipertahankan: `id.volingo.volingo_korean`.
 

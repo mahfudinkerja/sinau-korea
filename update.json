@@ -1,8 +1,8 @@
 {
-  "versionCode": 6,
-  "versionName": "1.4.0",
-  "apkUrl": "https://github.com/mahfudinkerja/sinau-korea/releases/download/v1.4.0/sinau-korea-1.4.0.apk",
-  "notes": "Mastery modul minimal 70%, jawaban salah otomatis masuk review SRS, perbaikan heading light mode, XP/streak lebih adil, dan updater yang lebih andal.",
-  "sizeBytes": 50969222,
-  "sha256": "7e6607e5273ca916a1d70b4684694591ee6867972e00a168b54b8b1b2778277a"
+  "versionCode": 7,
+  "versionName": "1.5.0",
+  "apkUrl": "https://github.com/mahfudinkerja/sinau-korea/releases/download/v1.5.0/sinau-korea-1.5.0.apk",
+  "notes": "Redesign antarmuka: tab Hari Ini, Kurikulum, Review, dan Profil; dashboard SRS baru; statistik asli dan pengaturan progres di Profil.",
+  "sizeBytes": 51375499,
+  "sha256": "2b9d9c70ed28d836f0e3cda2b1cc2c15e69b2d1fed10517bc664d228c6cad079"
 }
